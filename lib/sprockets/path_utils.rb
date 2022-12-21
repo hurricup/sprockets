@@ -7,6 +7,9 @@ module Sprockets
   module PathUtils
     extend self
     require 'pathname'
+    def self.rename_mutex
+      @rename_mutex ||= ENV['OS'] == 'Windows_NT' ? Mutex.new : nil
+    end
 
     # Public: Like `File.stat`.
     #
@@ -359,7 +362,13 @@ module Sprockets
         yield f
       end
 
-      File.rename(tmpname, filename)
+      if PathUtils.rename_mutex
+        PathUtils.rename_mutex.synchronize do
+          File.rename(tmpname, filename)
+        end
+      else
+        File.rename(tmpname, filename)
+      end
     ensure
       File.delete(tmpname) if File.exist?(tmpname)
     end

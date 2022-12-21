@@ -2,6 +2,8 @@
 
 Get upgrade notes from Sprockets 3.x to 4.x at https://github.com/rails/sprockets/blob/master/UPGRADING.md
 
+- Fixed race on file renaming on windows causing random access violation errors. [#136](https://github.com/rails/sprockets/issues/136)
+
 ## 4.2.0
 
 - Rack 3 compatibility. [#758](https://github.com/rails/sprockets/pull/758)
